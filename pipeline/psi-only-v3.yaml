@@ -61,7 +61,7 @@ node(nodeName) {
 
             build ([
                 wait: false,
-                job: "rhceph-test-execution-pipeline",
+                job: "ck-executor",
                 parameters: [
                     string(name: 'rhcephVersion', value: rhcephVersion),
                     string(name: 'tags', value: tags),
