@@ -54,12 +54,20 @@ node(nodeName) {
         def rhcephVersion = ciMap["artifact"]["nvr"]
         def recipe_file = "${rhcephVersion}.yaml"
         println "recipe file is ${recipe_file}"
+        
+        def rhcsVersion = sharedLib.getRHCSVersionFromArtifactsNvr()
+        majorVersion = rhcsVersion["major_version"]
+        minorVersion = rhcsVersion["minor_version"]
 
-        def recipeContent = readYaml file: "${recipe_file}"
-        recipeContent = writeJSON returnText: true, json:  recipeContent
+        releaseContent = sharedLib.readFromReleaseFile(
+            majorVersion, minorVersion, lockFlag=false
+        )
+
+#         def recipeContent = readYaml file: "${recipe_file}"
+#         recipeContent = writeJSON returnText: true, json:  recipeContent
 
         println "Starting test execution with parameters:"
-        println "\trhcephVersion: ${rhcephVersion}\n\tbuildType: ${buildType}\n\tbuildArtifacts: ${recipeContent}\n\toverrides: ${overrides}\n\ttags: ${tags}"
+        println "\trhcephVersion: ${rhcephVersion}\n\tbuildType: ${buildType}\n\tbuildArtifacts: ${releaseContent}\n\toverrides: ${overrides}\n\ttags: ${tags}"
 
             build ([
                 wait: false,
