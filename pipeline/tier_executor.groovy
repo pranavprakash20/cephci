@@ -119,7 +119,7 @@ node(nodeName) {
             overrides.put("build", "rc")
         }
 
-        if ("openstack" in tags_list){
+        if ("openstack" in tags_list || "openstack-only" in tags_list){
             def (majorVersion, minorVersion) = rhcephVersion.substring(7,).tokenize(".")
             /*
                Read the release yaml contents to get contents,
@@ -163,11 +163,12 @@ node(nodeName) {
 
     parallel testStages
 
-    if ("openstack" in tags_list){
+    if ("openstack" in tags_list || "openstack-only" in tags_list){
         stage('Publish Results') {
         /* Publish results through E-mail to user who started the run*/
             build_url = env.BUILD_URL
-            run_type = "Manual Run"
+            if ("openstack-only" in tags_list){run_type = "PSI-only Run"}
+            else {run_type = "Manual Run"}
             sharedLib.sendEmail(
                 run_type,
                 testResults,
