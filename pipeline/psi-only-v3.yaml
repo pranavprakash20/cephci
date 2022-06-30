@@ -47,7 +47,6 @@ node(nodeName) {
             sharedLib = load("${env.WORKSPACE}/pipeline/vars/lib.groovy")
             sharedLib.prepareNode()
         }
-    }
 
     stage("Trigger Pipeline") {
         ciMap = sharedLib.getCIMessageMap()
