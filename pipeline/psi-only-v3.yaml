@@ -63,7 +63,7 @@ node(nodeName) {
             majorVersion, minorVersion, lockFlag=false
         )
         
-        def data = readJSON text: "${releaseContent.get("tier-0")}"
+        def data = readJSON text: "${releaseContent}"
         println("data in ve is ${data}")
         
         println "Starting test execution with parameters:"
@@ -77,7 +77,7 @@ node(nodeName) {
                     string(name: 'tags', value: tags),
                     string(name: 'buildType', value: buildType.toString()),
                     string(name: 'overrides', value: overrides.toString()),
-                    string(name: 'buildArtifacts', value: data.toString()),
+                    string(name: 'buildArtifacts', value: data.get("tier-0")),
                     string(name: 'gitbranch', value: 'ck_pipeline'),]
             ])
         }
