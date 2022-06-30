@@ -63,9 +63,6 @@ node(nodeName) {
             majorVersion, minorVersion, lockFlag=false
         )
 
-#         def recipeContent = readYaml file: "${recipe_file}"
-#         recipeContent = writeJSON returnText: true, json:  recipeContent
-
         println "Starting test execution with parameters:"
         println "\trhcephVersion: ${rhcephVersion}\n\tbuildType: ${buildType}\n\tbuildArtifacts: ${releaseContent}\n\toverrides: ${overrides}\n\ttags: ${tags}"
 
