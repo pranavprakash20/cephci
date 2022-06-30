@@ -6,7 +6,6 @@
 def nodeName = "centos-7"
 
 // Default job parameters
-def buildType = "${params.buildType}" ? "tier-1" : "${params.buildType}"
 def overrides = "${params.overrides}" ? "{}" : "${params.overrides}"
 def tags = "${params.tags}" ? "openstack-only,psi,tier-1,stage-1" : "${params.tags}"
 
