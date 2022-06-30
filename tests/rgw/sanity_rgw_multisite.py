@@ -93,9 +93,9 @@ def run(**kw):
         set_test_env(config, primary_rgw_node)
         set_test_env(config, secondary_rgw_node)
 
-        stdin, stdout, stderr = primary_installer_node.exec_command("sudo ceph --version")
-        if stderr:
 #         if primary_cluster.rhcs_version.version[0] == 5:
+        stdin, stdout, stderr = primary_installer_node.exec_command(cmd="sudo ceph --version")
+        if stderr:
             setup_cluster_access(primary_cluster, primary_rgw_node)
             setup_cluster_access(secondary_cluster, secondary_rgw_node)
 
