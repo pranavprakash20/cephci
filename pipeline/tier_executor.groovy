@@ -87,9 +87,8 @@ node(nodeName) {
         tags = "${params.tags}" ?: ""
         overrides = "${params.overrides}" ?: "{}"
         println("Fetching buildArtifacts")
-        println "buildArtifacts before : ${buildArtifacts}"
-        def data = buildArtifacts.trim()
-        println "buildArtifacts before after trim : ${data}"
+        def datatype = buildArtifacts.getClass()
+        println("data type is ${datatype}")
         if ( buildArtifacts ){
             buildArtifacts = readJSON text: "${buildArtifacts}"
         }
