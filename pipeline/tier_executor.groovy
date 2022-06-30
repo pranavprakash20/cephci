@@ -87,6 +87,8 @@ node(nodeName) {
         tags = "${params.tags}" ?: ""
         overrides = "${params.overrides}" ?: "{}"
         println("Fetching buildArtifacts")
+        println "buildArtifacts before : ${buildArtifacts}"
+        println "buildArtifacts before : ${buildArtifacts}.trim()"
         if ( buildArtifacts ){
             buildArtifacts = readJSON text: "${buildArtifacts}"
         }
