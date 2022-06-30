@@ -74,7 +74,7 @@ node(nodeName) {
                     string(name: 'tags', value: tags),
                     string(name: 'buildType', value: buildType.toString()),
                     string(name: 'overrides', value: overrides.toString()),
-                    string(name: 'buildArtifacts', value: recipeContent.get("tier-0").toString())]
+                    string(name: 'buildArtifacts', value: releaseContent.get("tier-0").toString())]
             ])
         }
     }
