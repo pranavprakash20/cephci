@@ -81,6 +81,7 @@ def run(**kw):
     secondary_cluster = clusters.get("ceph-rgw2", clusters[list(clusters.keys())[1]])
     primary_rgw_node = primary_cluster.get_ceph_object("rgw").node
     secondary_rgw_node = secondary_cluster.get_ceph_object("rgw").node
+    primary_installer_node = primary_cluster.get_ceph_object("installer").node
 
     test_folder = "rgw-ms-tests"
     test_folder_path = f"/home/cephuser/{test_folder}"
@@ -92,7 +93,9 @@ def run(**kw):
         set_test_env(config, primary_rgw_node)
         set_test_env(config, secondary_rgw_node)
 
-        if primary_cluster.rhcs_version.version[0] == 5:
+        stdin, stdout, stderr = primary_installer_node.exec_command("sudo ceph --version")
+        if stderr:
+#         if primary_cluster.rhcs_version.version[0] == 5:
             setup_cluster_access(primary_cluster, primary_rgw_node)
             setup_cluster_access(secondary_cluster, secondary_rgw_node)
 
