@@ -13,37 +13,40 @@ def tags = "${params.tags}" ? "openstack-only,psi,tier-1,stage-1" : "${params.ta
 // Pipeline script entry point
 node(nodeName) {
     stage('Install prereq') {
-        if (env.WORKSPACE) { sh script: "sudo rm -rf * .venv" }
-        checkout(
-            scm: [
-                $class: 'GitSCM',
-                branches: [[name: 'origin/master']],
-                extensions: [
-                    [
-                        $class: 'CleanBeforeCheckout',
-                        deleteUntrackedNestedRepositories: true
+            if (env.WORKSPACE) { sh script: "sudo rm -rf * .venv" }
+            checkout(
+                scm: [
+                    $class: 'GitSCM',
+                    branches: [[name: 'refs/remotes/origin/ck_pipeline']],
+                    extensions: [
+                        [
+                            $class: 'CleanBeforeCheckout',
+                            deleteUntrackedNestedRepositories: true
+                        ],
+                        [
+                            $class: 'WipeWorkspace'
+                        ],
+                        [
+                            $class: 'CloneOption',
+                            depth: 1,
+                            noTags: true,
+                            shallow: true,
+                            timeout: 10,
+                            reference: ''
+                        ]
                     ],
-                    [
-                        $class: 'WipeWorkspace'
-                    ],
-                    [
-                        $class: 'CloneOption',
-                        depth: 1,
-                        noTags: true,
-                        shallow: true,
-                        timeout: 10,
-                        reference: ''
-                    ]
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/red-hat-storage/cephci.git'
+                    ]]
                 ],
-                userRemoteConfigs: [[
-                    url: 'https://github.com/red-hat-storage/cephci.git'
-                ]]
-            ],
-            changelog: false,
-            poll: false
-        )
+                changelog: false,
+                poll: false
+            )
 
-        load("${env.WORKSPACE}/pipeline/vars/v3.groovy").prepareNode()
+            // prepare the node
+            sharedLib = load("${env.WORKSPACE}/pipeline/vars/lib.groovy")
+            sharedLib.prepareNode()
+        }
     }
 
     stage("Trigger Pipeline") {
