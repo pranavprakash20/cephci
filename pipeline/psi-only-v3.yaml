@@ -8,7 +8,7 @@ def nodeName = "centos-7"
 // Default job parameters
 def overrides = "${params.overrides}" ? "{}" : "${params.overrides}"
 def tags = "${params.tags}" ? "openstack-only,tier-1,stage-1" : "${params.tags}"
-def releaseContent = [:]
+def recipeFileDir = "/ceph/cephci-jenkins/latest-rhceph-container-info"
 
 // Pipeline script entry point
 node(nodeName) {
@@ -54,18 +54,13 @@ node(nodeName) {
         def rhcephVersion = ciMap["artifact"]["nvr"]
         def recipe_file = "${rhcephVersion}.yaml"
         println "recipe file is ${recipe_file}"
-        
-        def rhcsVersion = sharedLib.getRHCSVersionFromArtifactsNvr()
-        majorVersion = rhcsVersion["major_version"]
-        minorVersion = rhcsVersion["minor_version"]
-
-        releaseContent = sharedLib.readFromReleaseFile(
-            majorVersion, minorVersion, lockFlag=false
-        )
+       
+        def recipeContent = readYaml file: "${recipeFileDir}/${recipe_file}"
+        recipeContent = writeJSON returnText: true, json:  recipeContent
         
         
         println "Starting test execution with parameters:"
-        println "\trhcephVersion: ${rhcephVersion}\n\tbuildType: ${buildType}\n\tbuildArtifacts: ${releaseContent}\n\toverrides: ${overrides}\n\ttags: ${tags}"
+        println "\trhcephVersion: ${rhcephVersion}\n\tbuildType: ${buildType}\n\tbuildArtifacts: ${recipeContent}\n\toverrides: ${overrides}\n\ttags: ${tags}"
 
             build ([
                 wait: false,
@@ -75,7 +70,7 @@ node(nodeName) {
                     string(name: 'tags', value: tags),
                     string(name: 'buildType', value: buildType.toString()),
                     string(name: 'overrides', value: overrides.toString()),
-                    string(name: 'buildArtifacts', value: releaseContent.get("tier-0").toString()),
+                    string(name: 'buildArtifacts', value: recipeContent.get("tier-0").toString()),
                     string(name: 'gitbranch', value: 'ck_pipeline'),]
             ])
         }
