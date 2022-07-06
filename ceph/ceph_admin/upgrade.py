@@ -104,3 +104,14 @@ class UpgradeMixin:
             LOG.info("Status : %s" % out)
         else:
             raise UpgradeFailure("Upgrade did not complete or failed")
+
+    def upgrade_stop(self: OrchProtocol):
+        """
+        Execute the command ceph orch stop.
+
+        Returns:
+            upgrade Status (Dict)
+
+        """
+        out, _ = self.shell(args=["ceph", "orch", "upgrade", "stop"])
+        return loads(out)
