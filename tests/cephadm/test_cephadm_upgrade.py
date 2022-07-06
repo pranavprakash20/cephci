@@ -64,6 +64,16 @@ def run(ceph_cluster, **kwargs) -> int:
         orch.upgrade_check(image=config.get("container_image"))
 
         # Start Upgrade
+        installer = ceph_cluster.get_nodes(role="installer")[0]
+        rhbuild = config.get("rhbuild")
+        log.info(rhbuild)
+        if rhbuild.startswith("5"):
+            ceph_version = installer.get_installed_ceph_versions()
+            log.info(ceph_version)
+            if ceph_version.startswith("16.2.7"):
+                response = orch.upgrade_stop()
+                log.info(response)
+
         config.update({"args": {"image": "latest"}})
         orch.start_upgrade(config)
 
