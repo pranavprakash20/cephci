@@ -20,7 +20,6 @@ globals:
         disk-size: 20
         no-of-volumes: 4
         role:
-          - rgw
           - osd
       node5:
         role:
@@ -30,7 +29,7 @@ globals:
         no-of-volumes: 4
       node6:
         disk-size: 20
-        no-of-volumes: 4
+        no-of-volumes: 6
         role:
           - osd
           - grafana
