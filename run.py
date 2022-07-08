@@ -253,7 +253,7 @@ def create_nodes(
 
         cluster_name = cluster.get("ceph-cluster").get("name", "ceph")
         ceph_cluster_dict[cluster_name] = Ceph(cluster_name, ceph_nodes)
-
+        
         # Set the network attributes of the cluster
         # ToDo: Support other providers like openstack and IBM-C
         if "baremetal" in cloud_type:
@@ -725,6 +725,7 @@ def run(args):
     tests = suite.get("tests")
     tcs = []
     jenkins_rc = 0
+    _rhcs_version = rhbuild[:3]
     # use ceph_test_data to pass around dynamic data between tests
     ceph_test_data = dict()
     ceph_test_data["custom-config"] = custom_config
@@ -834,7 +835,6 @@ def run(args):
                 # Initialize the cluster with the expected rhcs_version hence the
                 # precedence would be from test suite.
                 # rhbuild would start with the version for example 5.0 or 4.2-rhel-7
-                _rhcs_version = rhbuild[:3]
                 if "config" in test.keys() and "build" in test["config"].keys():
                     _rhcs_version = test["config"]["build"]
                 ceph_cluster_dict[cluster_name].rhcs_version = _rhcs_version
