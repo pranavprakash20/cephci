@@ -835,8 +835,8 @@ def run(args):
                 # Initialize the cluster with the expected rhcs_version hence the
                 # precedence would be from test suite.
                 # rhbuild would start with the version for example 5.0 or 4.2-rhel-7
-                if "config" in test.keys() and "build" in test["config"].keys():
-                    _rhcs_version = test["config"]["build"]
+                if "build" in config.keys():
+                    _rhcs_version = config["build"]
                 ceph_cluster_dict[cluster_name].rhcs_version = _rhcs_version
 
                 rc = test_mod.run(
