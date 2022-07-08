@@ -14,7 +14,7 @@ tests:
       module: test_ansible.py
       config:
         use_cdn: true
-        build: "4.x"
+        build: '4.x'
         ansi_config:
           ceph_origin: repository
           ceph_repository_type: cdn
@@ -22,7 +22,6 @@ tests:
           ceph_repository: rhcs
           osd_scenario: lvm
           osd_auto_discovery: false
-          fetch_directory: ~/fetch
           copy_admin_key: true
           dashboard_enabled: false
           ceph_docker_image: "rhceph/rhceph-4-rhel8"
